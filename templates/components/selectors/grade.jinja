@@ -1,0 +1,9 @@
+<label for="picker[grade]">Grade: </label>
+
+<select name="grade" id="picker[grade]" @change="setLevel(parseInt($event.target.value))">
+
+  {% for n in [1, 2, 3, 4, 5, 6, 8] %}
+    <option :value="{{n}}">{{n}}</option>
+  {% endfor %}
+
+</select>

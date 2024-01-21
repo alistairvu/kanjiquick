@@ -1,0 +1,73 @@
+{% extends "layout/base.jinja" %}
+
+{% block body %}
+<div x-data="kanji">
+  <div class="my-2 text-center">
+    {% if test_type == 'jouyou' %}
+    {% include "components/selectors/grade.jinja" %}
+    {% endif %}
+
+    {% if test_type == 'wk' %}
+    {% include "components/selectors/wk.jinja" %}
+    {% endif %}
+
+
+    {% if test_type == 'jlpt' %}
+    {% include "components/selectors/jlpt.jinja" %}
+    {% endif %}
+
+
+
+    <hr class="my-2 border-gray-400" />
+  </div>
+
+
+  <div class="p-2 my-2">
+    <h1 x-text="currentKanji.character" class="text-9xl font-medium my-4"></h1>
+
+    <span class="mt-2 text-lg" :class="showAnswers || 'link link-primary link-ghost-primary'"
+      @click="showAnswers = true"
+      x-text="showAnswers ? [...new Set(currentKanji['meanings'].concat(currentKanji['wk_meanings']))].join(', ') : 'Reveal Meanings...'"></span>
+
+  </div>
+
+  <form class="my-2 w-full flex gap-2 justify-center items-center" @submit="checkAnswer">
+    <button class="btn" type="button" @click="skip">Skip</button>
+
+    <input type="text" placeholder="Enter a meaning..." class="input text-center grow text-lg"
+      @change="isIncorrect = false" :class="isIncorrect ? 'input-error' : '' " x-model="answer">
+
+    <button class="btn btn-primary" type="submit">Check</button>
+  </form>
+
+
+  <div class="my-4 italic">
+    <p>A small app to help you learn the meanings of basic Kanji.</p>
+
+    <p>Enter one English
+      meaning
+      above
+      and press
+      enter, or press Skip if you don't know.</p>
+
+    <p>If
+      your answer's correct, we'll move onto the next kanji; if it's incorrect, try again. </p>
+
+    <p>You can sort by Jōyō kanji
+      grade level
+      <a href="/" class="link link-primary">here</a>, JLPT level <a href="{{url_for('jlpt')}}"
+        class="link link-primary">here</a>, or
+      WaniKani level <a href="{{url_for('wk')}}" class="link link-primary">here</a>.
+    </p>
+  </div>
+</div>
+{% endblock body %}
+
+{% block script %}
+<script type="text/javascript">
+  window.kanjis = {{ kanjis | safe }}
+  window.testType = "{{ test_type }}"
+</script>
+
+<script src="{{url_for('static', filename='dist/js/script.js')}}"></script>
+{% endblock script %}

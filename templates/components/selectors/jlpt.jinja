@@ -1,0 +1,9 @@
+<label for="picker[jlpt]">JLPT Level: </label>
+
+<select name="jlpt" id="picker[jlpt]" @change="setLevel(parseInt($event.target.value))">
+
+  {% for n in [5, 4, 3, 2, 1] %}
+    <option :value="{{n}}">N{{n}}</option>
+  {% endfor %}
+
+</select>
