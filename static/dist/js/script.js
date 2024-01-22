@@ -31,9 +31,9 @@ document.addEventListener('alpine:init', () => {
     showAnswers: false,
 
     init() {
-      this.learningKanji = window.kanjis.filter((x) =>
-        isLearning(x, this.level)
-      );
+      this.learningKanji = window.kanjis
+        .filter((x) => isLearning(x, this.level))
+        .sort(() => Math.random() - 0.5);
       this.currentKanji = this.learningKanji[0];
     },
 
